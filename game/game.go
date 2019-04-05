@@ -4,7 +4,6 @@
 package game
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/mraufc/tictactoe/player"
@@ -22,10 +21,6 @@ type TicTacToe struct {
 	gameOver bool
 	moves    int
 }
-
-// ErrInvalidGameSpecs is returned when board size and/or game win condition numbers are invalid
-// or player1 or player2 is nil.
-var ErrInvalidGameSpecs = errors.New("invalid game specifications")
 
 // New returns a new game of TicTacToe.
 // Board size must be greater than or equal to 3.
@@ -88,14 +83,15 @@ func (t *TicTacToe) Result() (bool, int) {
 	return !t.gameOver, t.winner
 }
 
-// ErrInvalidBoard is returned when board input is not valid
-var ErrInvalidBoard = errors.New("invalid board")
-
 // Evaluate evalutes a hypothetical board position and a side's move.
 // board parameter and the TicTacToe's instance board sizes must match.
 func (t *TicTacToe) Evaluate(board [][]int, side, i, j int) (gameOver bool, winner int, err error) {
 	if board == nil {
 		err = ErrInvalidBoard
+		return
+	}
+	if side != 1 && side != 2 {
+		err = ErrInvalidSide
 		return
 	}
 	if len(board) != len(t.board) {
