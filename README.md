@@ -8,7 +8,7 @@ The implementation allows a flexible N x M game size where N >= 3, M >= 3 and T 
 Usage
 =======
 
-See [here](https://github.com/mraufc/tictactoe/game/blob/master/example_game_test.go) for examples.
+See [here](https://github.com/mraufc/tictactoe/blob/master/game/example_game_test.go) for examples.
 
 Documentation
 =======
