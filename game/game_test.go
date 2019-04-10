@@ -11,8 +11,7 @@ func TestNew(t *testing.T) {
 	p1 := NewTestPlayer(nil, "p1")
 	p2 := NewTestPlayer(nil, "p2")
 	type args struct {
-		size    int
-		target  int
+		e       *Engine
 		player1 player.Player
 		player2 player.Player
 	}
@@ -25,13 +24,20 @@ func TestNew(t *testing.T) {
 		{
 			name: "valid game 3x3, target: 3",
 			args: args{
-				size:    3,
-				target:  3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				player1: p1,
 				player2: p2,
 			},
 			want: &TicTacToe{
-				target: 3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				board: [][]int{
 					[]int{0, 0, 0},
 					[]int{0, 0, 0},
@@ -48,13 +54,20 @@ func TestNew(t *testing.T) {
 		{
 			name: "valid game 6x6, target: 4",
 			args: args{
-				size:    6,
-				target:  4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				player1: p1,
 				player2: p2,
 			},
 			want: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{0, 0, 0, 0, 0, 0},
 					[]int{0, 0, 0, 0, 0, 0},
@@ -72,21 +85,9 @@ func TestNew(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "invalid game 2x2, target: 2",
+			name: "invalid game nil engine",
 			args: args{
-				size:    2,
-				target:  2,
-				player1: p1,
-				player2: p2,
-			},
-			want:    nil,
-			wantErr: true,
-		},
-		{
-			name: "invalid game 5x5, target: 6",
-			args: args{
-				size:    5,
-				target:  6,
+				e:       nil,
 				player1: p1,
 				player2: p2,
 			},
@@ -96,8 +97,11 @@ func TestNew(t *testing.T) {
 		{
 			name: "invalid game 6x6, target: 4, nil player1",
 			args: args{
-				size:    6,
-				target:  4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				player1: nil,
 				player2: p2,
 			},
@@ -107,8 +111,11 @@ func TestNew(t *testing.T) {
 		{
 			name: "invalid game 6x6, target: 4, nil player2",
 			args: args{
-				size:    6,
-				target:  4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				player1: p1,
 				player2: nil,
 			},
@@ -118,7 +125,7 @@ func TestNew(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := New(tt.args.size, tt.args.target, tt.args.player1, tt.args.player2)
+			got, err := New(tt.args.e, tt.args.player1, tt.args.player2)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("New() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -144,7 +151,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 3x3 game, target: 3, X plays 2, 2",
 			t: &TicTacToe{
-				target: 3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				board: [][]int{
 					[]int{1, 1, 0},
 					[]int{2, 2, 0},
@@ -165,7 +176,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "completed 3x3 game, target: 3",
 			t: &TicTacToe{
-				target: 3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				board: [][]int{
 					[]int{1, 1, 2},
 					[]int{2, 2, 1},
@@ -186,7 +201,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 3x3 game, target: 3, X plays an occupied position",
 			t: &TicTacToe{
-				target: 3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				board: [][]int{
 					[]int{1, 1, 0},
 					[]int{2, 2, 0},
@@ -207,7 +226,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 3x3 game, target: 3, X plays -1, 0",
 			t: &TicTacToe{
-				target: 3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				board: [][]int{
 					[]int{1, 1, 0},
 					[]int{2, 2, 0},
@@ -228,7 +251,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 3x3 game, target: 3, O plays 5, 0",
 			t: &TicTacToe{
-				target: 3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				board: [][]int{
 					[]int{1, 1, 0},
 					[]int{2, 2, 0},
@@ -249,7 +276,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 3x3 game, target: 3, X wins 0, 0 to 0, 2",
 			t: &TicTacToe{
-				target: 3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				board: [][]int{
 					[]int{1, 1, 0},
 					[]int{2, 2, 0},
@@ -270,7 +301,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 3x3 game, target: 3, X wins 0, 0 to 2, 2",
 			t: &TicTacToe{
-				target: 3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				board: [][]int{
 					[]int{1, 0, 2},
 					[]int{0, 1, 2},
@@ -291,7 +326,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 3x3 game, target: 3, X wins 0, 2 to 2, 0",
 			t: &TicTacToe{
-				target: 3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				board: [][]int{
 					[]int{2, 0, 1},
 					[]int{0, 1, 2},
@@ -312,7 +351,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 3x3 game, target: 3, draw",
 			t: &TicTacToe{
-				target: 3,
+				e: &Engine{
+					rows:    3,
+					columns: 3,
+					target:  3,
+				},
 				board: [][]int{
 					[]int{1, 2, 1},
 					[]int{0, 1, 2},
@@ -333,7 +376,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 6x6 game, target: 4, O wins 1, 1 to 4, 4",
 			t: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{0, 1, 1, 1, 0, 1},
 					[]int{0, 2, 0, 0, 0, 0},
@@ -357,7 +404,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 6x6 game, target: 4, O wins 0, 5 to 3, 2",
 			t: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{0, 1, 1, 1, 0, 2},
 					[]int{1, 0, 0, 0, 2, 0},
@@ -381,7 +432,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 6x6 game, target: 4, O wins 3, 2 to 3, 5",
 			t: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{0, 1, 1, 1, 0, 0},
 					[]int{1, 0, 0, 0, 0, 0},
@@ -405,7 +460,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 6x6 game, target: 4, O wins 0, 0 to 0, 3",
 			t: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{2, 1, 1, 1, 0, 1},
 					[]int{0, 0, 0, 0, 0, 0},
@@ -429,7 +488,11 @@ func TestTicTacToe_Play(t *testing.T) {
 		{
 			name: "valid 6x6 game, target: 4, O wins 0, 0 to 5, 5",
 			t: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{2, 1, 1, 1, 0, 1},
 					[]int{2, 0, 0, 0, 0, 1},
@@ -484,7 +547,11 @@ func TestTicTacToe_Evaluate(t *testing.T) {
 		{
 			name: "valid board, valid X move to 3, 3",
 			t: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{0, 0, 0, 0, 0, 0},
 					[]int{0, 0, 0, 0, 0, 0},
@@ -519,7 +586,11 @@ func TestTicTacToe_Evaluate(t *testing.T) {
 		{
 			name: "valid board, valid X move to 0, 0",
 			t: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{0, 0, 0, 0, 0, 0},
 					[]int{0, 0, 0, 0, 0, 0},
@@ -554,7 +625,11 @@ func TestTicTacToe_Evaluate(t *testing.T) {
 		{
 			name: "valid board, invalid X move",
 			t: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{0, 0, 0, 0, 0, 0},
 					[]int{0, 0, 0, 0, 0, 0},
@@ -589,7 +664,11 @@ func TestTicTacToe_Evaluate(t *testing.T) {
 		{
 			name: "invalid board, invalid row count",
 			t: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{0, 0, 0, 0, 0, 0},
 					[]int{0, 0, 0, 0, 0, 0},
@@ -623,7 +702,11 @@ func TestTicTacToe_Evaluate(t *testing.T) {
 		{
 			name: "invalid board, invalid column count",
 			t: &TicTacToe{
-				target: 4,
+				e: &Engine{
+					rows:    6,
+					columns: 6,
+					target:  4,
+				},
 				board: [][]int{
 					[]int{0, 0, 0, 0, 0, 0},
 					[]int{0, 0, 0, 0, 0, 0},
@@ -658,7 +741,7 @@ func TestTicTacToe_Evaluate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotGameOver, gotWinner, err := tt.t.Evaluate(tt.args.board, tt.args.side, tt.args.i, tt.args.j)
+			gotGameOver, gotWinner, err := tt.t.e.Evaluate(tt.args.board, tt.args.side, tt.args.i, tt.args.j)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("TicTacToe.Evaluate() error = %v, wantErr %v", err, tt.wantErr)
 				return
