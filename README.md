@@ -13,4 +13,6 @@ See [here](https://github.com/mraufc/tictactoe/blob/master/game/example_game_tes
 Documentation
 =======
 
-See [here](https://godoc.org/github.com/mraufc/tictactoe) for GoDoc.
+See [here](https://godoc.org/github.com/mraufc/tictactoe/game) for game package GoDoc.
+
+See [here](https://godoc.org/github.com/mraufc/tictactoe/player) for player package GoDoc.
