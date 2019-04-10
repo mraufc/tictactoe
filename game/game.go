@@ -1,6 +1,6 @@
-// Package game is a simple TicTacToe variant implementation.
-// The implementation allows a flexible N x N game size where N >= 3 and M consequetive symbols
-// as win condition where M >= 3 & M <= N.
+// Package game is a simple generalized TicTacToe variant implementation.
+// The implementation allows a flexible N x M game size where N >= 3, M >= 3 and T consequetive symbols
+// as win condition where T >= 3, T <= N and T <= M.
 package game
 
 import (
